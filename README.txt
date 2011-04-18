@@ -1,0 +1,1 @@
+Sample TODO application for demonstrating AJAX calls using Rails 3 and jQuery templates.
