@@ -1,0 +1,13 @@
+Todo items:
+
+<% form_for Todo.new do |f| -%>
+  <%= f.text_field :title %>
+  <%= f.submit %>
+<% end -%>
+
+
+<ul>
+  <% for todo in @todos %>
+    <li><%= todo.title %></li>
+  <% end %>
+</ul>

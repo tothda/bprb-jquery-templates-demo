@@ -1,0 +1,58 @@
+<h1>Todo items</h1>
+
+<div id="todo_form"></div>
+
+<ul id="todo_list"></ul>
+
+<div id="todo_detail_container">
+  No todo is selected.
+</div>
+
+<div class="clear"></div>
+
+<script id='tmpl_todo_item' type='x-jquery-tmpl'>
+  <li>
+    {{if todo.is_done}}
+      <input type="checkbox" name="is_done" checked>
+      <label style="text-decoration:line-through; color:gray">${todo.title}</label>
+    {{else}}
+      <input type="checkbox" name="is_done">
+      <label>${todo.title}</label>
+    {{/if}}
+    <a href="#">detail</a>
+  </li>
+</script>
+
+<script id='tmpl_todo_form_old' type='x-jquery-tmpl'>
+  <% form_for Todo.new, :remote => true do |f| -%>
+    <%= f.text_field :title %>
+    <%= f.submit %>
+  <% end -%>
+</script>
+
+<script id='tmpl_new_todo_form' type='x-jquery-tmpl'>
+  <form action="/todos" data-remote="true" method="post">
+    <input type="text" name="todo[title]" value=""/>
+    <input type="submit" value="Add todo" />
+  </form>
+</script>
+
+<script id='tmpl_update_todo_form' type='x-jquery-tmpl'>
+  <form action="/todos/${todo.id}.json" data-remote="true" method="post">
+    <input type="hidden" name="_method" value="put" />
+    <input type="text" name="todo[title]" value="${todo.title}"/>
+    <input type="submit" value="Update todo" />
+    <a href="#">cancel</a>
+  </form>
+</script>
+
+<script id='tmpl_todo_item_detail' type='x-jquery-tmpl'>
+  <div id="todo_detail">
+    <h3>Todo detail view</h3>
+    <b>${todo.title}</b><br/><br/>
+    created at: ${todo.created_at}
+    updated at: ${todo.updated_at}
+  </div>
+</script>
+
+<script>

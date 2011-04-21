@@ -40,3 +40,4 @@ module RailsTodo
     config.filter_parameters += [:password]
   end
 end
+
