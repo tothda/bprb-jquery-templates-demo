@@ -50,8 +50,8 @@
   <div id="todo_detail">
     <h3>Todo detail view</h3>
     <b>${todo.title}</b><br/><br/>
-    created at: ${todo.created_at}
-    updated at: ${todo.updated_at}
+    created: <span class="timeage">${formatDate(new Date(todo.created_at))}</span><br/>
+    updated at: <span class="timeage">${formatDate(new Date(todo.updated_at))}</span><br/>
   </div>
 </script>
 

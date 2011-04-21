@@ -1,6 +1,3 @@
-// Place your application-specific JavaScript functions and classes here
-// This file is automatically included by javascript_include_tag :defaults
-
 $(function() {
   
   // compile the templates
@@ -29,12 +26,7 @@ $(function() {
     $.extend(true, payload, tmplData);
       
     $.post('/todos/'+tmplData.todo.id, payload, function(updatedTodo) {
-      tmplItem.tmpl = $.template("todo_item");
-      tmplItem.data = updatedTodo;
-      tmplItem.update();
-      detailTmplItem = $("#todo_detail").tmplItem();
-      detailTmplItem.data = updatedTodo;
-      detailTmplItem.update();
+      $('body').trigger('todoUpdated', [updatedTodo, tmplItem]);
     }, "json");
   });
   
@@ -54,9 +46,7 @@ $(function() {
       tmplItem.update();
     });
     $(form).bind('ajax:success', function(evt, todo) {
-      tmplItem.data = todo;
-      tmplItem.tmpl = $.template("todo_item");
-      tmplItem.update();
+      $('body').trigger('todoUpdated', [todo, tmplItem]);
     });
   });
   
@@ -66,4 +56,29 @@ $(function() {
     $.tmpl("todo_detail", $(this).tmplItem().data).appendTo("#todo_detail_container");
     return false;
   });
+  
+  // update the UI when a todo is updated
+  $('body').bind('todoUpdated', function(evt, todo, tmplItem) {
+    // update the item in the list
+    tmplItem.data = todo;
+    tmplItem.tmpl = $.template("todo_item");
+    tmplItem.update();
+    
+    // update the detail view
+    var detailTmplItem = $("#todo_detail").tmplItem();
+    detailTmplItem.data = todo;
+    detailTmplItem.update();
+  });
 });
+
+// date formatter helper function
+function formatDate(dateString) {
+  var distInSecs = parseInt((new Date() - new Date(dateString)) / 1000)
+    , minutes = parseInt(distInSecs / 60)
+    , seconds = distInSecs - 60 * minutes
+    , str = "";
+  
+  if (minutes) str = str + minutes +  " min, ";
+  str = str + seconds + " sec ago";
+  return str;
+}

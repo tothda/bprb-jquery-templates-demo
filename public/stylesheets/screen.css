@@ -19,7 +19,7 @@ a {
 }
 
 #container {
-  width: 75%;
+  width: 800px;
   margin: 0 auto;
   background-color: #FFF;
   padding: 20px 40px;
@@ -88,7 +88,17 @@ ul#todo_list li {
 #todo_detail_container {
   padding: 10px;
   float: right;
-  width: 300px;
+  width: 250px;
   height: 150px;
   border: 1px solid black;
+}
+
+.timeage {
+  color: gray;
+  font-size: 12px;
+}
+
+input[type=text] {
+  width: 300px;
+  margin-right: 20px;
 }
