@@ -98,6 +98,17 @@ ul#todo_list li {
   font-size: 12px;
 }
 
+h3 {
+  margin-top: 0;
+}
+
+.done {
+  background-color: green;
+  color: white;
+  padding: 2px 5px;
+  margin-left: 10px;
+}
+
 input[type=text] {
   width: 300px;
   margin-right: 20px;

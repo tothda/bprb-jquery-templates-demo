@@ -13,6 +13,20 @@ $(function() {
   $.get('/todos.json', function(data) {
     $.tmpl("todo_item", data).appendTo("#todo_list");
   })
+  
+  // handling creation of new todo items
+  $('form#new_todo_form').bind('ajax:success', function(evt, todo) {
+    $(this).find('input[type=text]').val('');
+    $.tmpl("todo_item", todo).prependTo($("#todo_list"));
+  });
+
+  // show detail view when an item is clicked
+  $("#todo_list li a").live("click", function(evt) {
+    var data = $(this).tmplItem().data;
+    $("#todo_detail_container").html('');
+    $.tmpl("todo_detail", data).appendTo("#todo_detail_container");
+    return false;
+  });
 
   // handle the click event on the checkboxes
   $('#todo_list li :checkbox').live('click', function() {
@@ -30,10 +44,7 @@ $(function() {
     }, "json");
   });
   
-  $('form').bind('ajax:success', function(evt, todo) {
-    $(this).find('input[type=text]').val('');
-    $("#tmpl_todo_item").tmpl(todo).prependTo($("#todo_list"));
-  });
+
   
   $("#todo_list li label").live("dblclick", function() {
     var tmplItem = $(this).tmplItem();
@@ -50,12 +61,7 @@ $(function() {
     });
   });
   
-  // show detail view when an item is clicked
-  $("#todo_list li a").live("click", function(evt) {
-    $("#todo_detail_container").html('');
-    $.tmpl("todo_detail", $(this).tmplItem().data).appendTo("#todo_detail_container");
-    return false;
-  });
+
   
   // update the UI when a todo is updated
   $('body').bind('todoUpdated', function(evt, todo, tmplItem) {
@@ -63,11 +69,13 @@ $(function() {
     tmplItem.data = todo;
     tmplItem.tmpl = $.template("todo_item");
     tmplItem.update();
-    
+
     // update the detail view
     var detailTmplItem = $("#todo_detail").tmplItem();
-    detailTmplItem.data = todo;
-    detailTmplItem.update();
+    if (detailTmplItem.update) {
+      detailTmplItem.data = todo;
+      detailTmplItem.update();
+    } 
   });
 });
 
